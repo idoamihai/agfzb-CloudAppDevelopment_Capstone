@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
 # from .restapis import related methods
-from.restapis import get_dealers_from_cf
+from.restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, 
+store_review
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -89,6 +90,7 @@ def get_dealerships(request):
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
+        context['dealerships'] = dealerships
         return render(request, 'djangoapp/index.html', context)
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
@@ -97,7 +99,7 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://https://idoamihai-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/djangoapp/api/review"
+        url = "https://https://idoamihai-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/review"
         reviews = get_dealer_reviews_from_cf(url)
         # Concat all dealer's short name
         # dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
@@ -114,3 +116,21 @@ def add_review(request, dealer_id):
     context = {}
     context['dealer_id'] = dealer_id
     return render(request, 'djangoapp/add_review.html', context)
+
+def post_store_review(request, dealer_id):
+    print("-------------------------------")
+    print(type(request))
+    print("-------------------------------")
+    url = "https://https://idoamihai-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/review-post"
+    payload = {}
+    if request.method == "POST":
+        payload['name'] = request.POST['name']
+        payload['dealership'] = request.POST['dealership']
+        payload['review'] = request.POST['review']
+        payload['purchase'] = request.POST['purchase']
+        payload['purchase_date'] = request.POST['purchase_date']
+        payload['car_make'] = request.POST['car_make']
+        payload['car_model'] = request.POST['car_model']
+        payload['car_year'] = request.POST['car_year']
+        store_review(url, payload)
+    return redirect('djangoapp:dealer_details', dealer_id = dealer_id)
