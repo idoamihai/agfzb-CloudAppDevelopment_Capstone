@@ -1,26 +1,16 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dealership Review</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<body>
 
-    <body>
-     This is the index page of your Django app!
-    <!--Add a nav bar here -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
-                <a class="navbar-brand" href="{% url 'djangoapp:index' %}"></a>
+                  <a class="navbar-brand" href="{% url 'djangoapp:index' %}"></a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -60,22 +50,24 @@
             </ul>
         </div>
     </nav>
-      
-    <!--Add a dealer table here -->
-    {% if dealerships %}
-    <div class="container">
-        <ul class="list-group">
-            {% for dealer in dealerships %}
-                <li class="list-group-item">
-                    <a href="{% url 'djangoapp:dealer_details' dealer.id %}">
-                        {{ dealer.short_name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    
-    </body>
 
-</html>
+    <form action="{% url 'djangoapp:login' %}" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <h1>Login</h1>
+            <div class="form-group">
+              <label for="username"><b>User Name</b></label>
+              <input id="username" class = "form-control" type="text" placeholder="Enter User Name: " name="username" required>
+              <label for="psw"><b>Password</b></label>
+              <input id="psw" class = "form-control" type="password"  placeholder="Enter Password: " name="psw" required>
+            </div>
+            {% if message %}
+              <div class="alert alert-warning">
+                {{ message }}
+              </div>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+    </form>
+
+</body>

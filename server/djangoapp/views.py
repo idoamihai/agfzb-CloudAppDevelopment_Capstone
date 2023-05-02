@@ -30,7 +30,7 @@ def login_request(request):
     context = {}
     if request.method == "POST":
         username = request.POST['username']
-        password = request.POST['password']
+        password = request.POST['psw']
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
@@ -58,7 +58,7 @@ def registration_request(request):
     elif request.method == 'POST':
         # Check if user exists
         username = request.POST['username']
-        password = request.POST['password']
+        password = request.POST['psw']
         first_name = request.POST['firstname']
         last_name = request.POST['lastname']
         user_exist = False
@@ -122,7 +122,7 @@ def post_store_review(request, dealer_id):
     print("-------------------------------")
     print(type(request))
     print("-------------------------------")
-    url = "https://https://idoamihai-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/review-post"
+    url = "https://us-south.functions.appdomain.cloud/api/v1/web/55790c70-4751-4caf-90e2-8ea1915de082/dealership-package/post-review"
     payload = {}
     if request.method == "POST":
         payload['name'] = request.POST['name']
