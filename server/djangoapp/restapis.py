@@ -71,13 +71,34 @@ def get_dealers_from_cf(url, **kwargs):
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
+# def get_dealer_reviews_from_cf(url, **kwargs):
+#     results = []
+#     json_result = get_request(url)
+#     if json_result:
+#         reviews = json_result #["entries"]
+#         for review_doc in reviews:
+#             review = review_doc['doc']
+#             r = DealerReview(
+#                 dealership=review.get("dealership"),
+#                 name=review.get("name"),
+#                 purchase=review.get("purchase"),
+#                 review=review.get("review"),
+#                 purchase_date=review.get("purchase_date"),
+#                 car_make=review.get("car_make"),
+#                 car_model=review.get("car_model"),
+#                 car_year=review.get("car_year"),
+#                 sentiment=analyze_review_sentiments(review.get("review")),
+#                 id=review.get("id")
+#             )
+#             results.append(r)
+#     return results
+
 def get_dealer_reviews_from_cf(url, **kwargs):
-    results = []
     json_result = get_request(url)
-    if json_result:
-        reviews = json_result #["entries"]
-        for review_doc in reviews:
-            review = review_doc['doc']
+    data = json_result["data"]["docs"]
+    results = []
+    if data:
+        for review in data:
             r = DealerReview(
                 dealership=review.get("dealership"),
                 name=review.get("name"),
@@ -115,5 +136,3 @@ def analyze_review_sentiments(text):
     response = requests.post(url, json=params, headers={'Content-Type': 'application/json'},
                                     auth=('apikey', api_key))
     return response.json()["sentiment"]["document"]["label"]
-
-
