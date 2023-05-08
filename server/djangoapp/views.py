@@ -101,7 +101,7 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://us-south.functions.appdomain.cloud/api/v1/web/55790c70-4751-4caf-90e2-8ea1915de082/dealership-package/get-dealership/review"
+        url = f"https://us-south.functions.appdomain.cloud/api/v1/web/55790c70-4751-4caf-90e2-8ea1915de082/dealership-package/get-reviews?id={dealer_id}"
         reviews = get_dealer_reviews_from_cf(url)
         # Concat all dealer's short name
         # dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
